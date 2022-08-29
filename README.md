@@ -1,70 +1,39 @@
-# Getting Started with Create React App
+# 무한스크롤 구현
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 구현사항
 
-## Available Scripts
+### fetch 비동기
 
-In the project directory, you can run:
+async, await란?
 
-### `npm start`
+- Promise를 통해 비동기 처리를 하는 방법도 있지만, Promist의 단점을 해결하기 위해 ES7(ES2017)에서 async, await 키워드가 추가되었다.
+- callback 이나 promise와 같이 비동기 코드를 작성하는 새로운 방법이다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### JSONplace holder
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+온라인에서 뼐도의 키값 없이도 연습용으로 REST API를 제공하는 사이트인 JSON placeholder를 사용해 데이터를 가져옴.
 
-### `npm test`
+### IntersectionObserver
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Scroll Event의 문제점
+scroll event는 단시간에 수백번, 수천번 호출될 수 있고, 동기적으로 실행되기 때문에 메인 스레드에 영향을 준다고 한다. 또한 한 페이지 내에서 여러 scroll event( 무한스크롤, 광고배너, 애니메이션)가 등록되있을 경우, 각 엘리먼트마다 이벤트가 등록되어 있기 때문에 사용자가 스크롤할 때 마다 이를 감지하는 이벤트가 끊임없이 호출된다.
 
-### `npm run build`
+이러한 문제들을 IntersectionOberver API를 사용하면 위와 같은 문제를 해결할 수 있다. 결과적으로, 비동기적으로 실행되기 때문에 메인 스레드에 영향을 주지 않으면서 변경사항을 관찰할 수 있다.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- isIntersecting 프로퍼티는 target element가 교차영역에 있따면 true를 반환하고, 아니라면 false를 반환한다.
+- threshold
+  - default : 0
+  - observer의 콜백이 실행될 대상 요소의 가시성 %를 나타내는 단일 숫자 혹은 숫자 배열이다. 만일 50%만큼 요소가 보여졌을 때를 탐지하고 싶다면, 값을 0.5로 설정하면 된다.
+  - threshold : 1 은 pageEnd의 ref요소가 있는 div태그 전체가 보여야만 콜백함수를 실행시킨다는 말이다.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### useRef
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- JavaScript를 사용할 때에는, 우리가 특정 DOM을 선태갷야 하는 상황에 getElementById,querySelector 같은 DOM Selector 함수를 사용해서 DOM을 선택한다.
+- 리액트를 사용하는 프로젝트에서도 가끔씩 DOM을 직접 선택해야 하는 상황이 발생 할 때도 있다. 예를들어서 특정 엘리먼트의 크기를 가져와야한다던지, 스크롤의 위치를 가져오거나 설정해야된다던지, 또는 포커스를 설정해야된다던지 등등의 정말 다양한 상황이 있다.
+  이럴 때 , Ref를 사용한다.
+- 함수형 컴포넌트에서 Ref를 사용할 때에는 useRef라는 Hook 함수를 사용한다.
+- useRef()를 사용하여 Ref 객체를 만들고, 선택하고 싶은 DOM에 ref 값으로 설정Ref 객체의 .current 값은 선택한 DOM을 가리킨다.
 
-### `npm run eject`
+### setState 시 이전 state 값 사용
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+setState(prev => ({...prev, number:"1"}))
